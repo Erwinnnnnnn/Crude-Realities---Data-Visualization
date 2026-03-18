@@ -31,7 +31,7 @@ from datetime import datetime, date
 from collections import defaultdict
 
 # ── Config ────────────────────────────────────────────────────────────────────
-INPUT_DIR  = "."          # folder containing all input files
+INPUT_DIR  = ".."  # folder containing all input files
 OUTPUT_DIR = "./output"   # output folder (created if missing)
 
 # Set True if you pre-converted XLS to CSV using libreoffice (see header above)
