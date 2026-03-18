@@ -19,7 +19,7 @@ export function initHeatmap(data) {
     let activeKey = 'wti';
 
     const container = document.getElementById('heatmap-container');
-    const W = container.clientWidth || 700;
+    const W = Math.max(300, (container.parentElement?.clientWidth || container.clientWidth || 700) - 48);
 
     // ── Series selector buttons ───────────────────────────────────────────────
     const btnRow = document.getElementById('heatmap-btns');
@@ -64,11 +64,15 @@ export function initHeatmap(data) {
 
         const cellW = Math.floor((W - MARGIN.left - MARGIN.right) / 12);
         const cellH = Math.max(16, Math.floor((380 - MARGIN.top - MARGIN.bottom) / years.length));
-        const H = cellH * years.length + MARGIN.top + MARGIN.bottom;
+        const H = cellH * years.length + MARGIN.top + MARGIN.bottom + 28;  // +28 for legend row at top
 
         d3.select('#heatmap-chart').selectAll('*').remove();
-        const svg = d3.select('#heatmap-chart').attr('width', W).attr('height', H);
-        const g = svg.append('g').attr('transform', `translate(${MARGIN.left},${MARGIN.top})`);
+        const svg = d3.select('#heatmap-chart')
+            .attr('width', W).attr('height', H)
+            .attr('viewBox', `0 0 ${W} ${H}`)
+            .attr('preserveAspectRatio', 'xMidYMid meet')
+            .style('max-width', '100%');
+        const g = svg.append('g').attr('transform', `translate(${MARGIN.left},${MARGIN.top + 28})`);
 
         // Colour scale — diverging, centred at 0
         const maxAbs = Math.min(d3.max(returns, d => Math.abs(d.pct)), 25);
@@ -148,10 +152,10 @@ export function initHeatmap(data) {
             .transition().duration(600).delay((d, i) => i * 0.8)
             .attr('opacity', 0.88);
 
-        // Colour legend
+        // Colour legend — placed top-right, above the grid
         const legendW = Math.min(200, W - MARGIN.left - 40);
         const legendG = svg.append('g')
-            .attr('transform', `translate(${W - legendW - 20}, 6)`);
+            .attr('transform', `translate(${W - legendW - 20}, 8)`);
 
         const defs = svg.append('defs');
         const grad = defs.append('linearGradient').attr('id', 'hm-grad');

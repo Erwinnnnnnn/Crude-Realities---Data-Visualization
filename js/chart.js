@@ -2,7 +2,7 @@
 // Gaps implemented: (2) shared hover, (3) draw-on-load animation, (4) inline labels
 import { SERIES, MARGIN, visible, priceMode, brushExtent, setHoverDate } from './main.js';
 
-const MAIN_H = 340;
+const MAIN_H = 380;
 
 // Key events that get a permanent visible rotated label on the chart
 const LABELED_EVENTS = new Set([
@@ -97,8 +97,9 @@ export function initChart(data, events) {
     svg = d3.select(svgEl);
     chartG = svg.append('g').attr('transform', `translate(${MARGIN.left},${MARGIN.top})`);
 
+    // Clip rect extended upward (y:-60) so rotated annotation labels aren't cut off
     svg.append('defs').append('clipPath').attr('id', 'main-clip')
-        .append('rect').attr('width', width).attr('height', height + 4).attr('y', -4);
+        .append('rect').attr('width', width).attr('height', height + 64).attr('y', -120);
 
     xScale = d3.scaleTime().domain(d3.extent(data, d => d.month)).range([0, width]);
     yScale = d3.scaleLinear().range([height, 0]);
@@ -253,22 +254,26 @@ export function updateChart(data, events) {
             .attr('stroke', isLabeled ? '#8b949e' : '#484f58')
             .attr('stroke-width', 1.2);
 
-        // Rotated inline label for key events
-        if (isLabeled) {
-            const short = ev.label
-                .replace('WCS hits record ', '')
-                .replace('All-time high ', '')
-                .replace('WTI goes negative: ', '');
-            marker.append('text')
-                .attr('y', 12)
-                .attr('dy', '-2')
-                .attr('text-anchor', 'start')
-                .attr('transform', 'rotate(-38, 0, 12)')
-                .attr('fill', '#8b949e')
-                .attr('font-size', '9.5px')
-                .attr('pointer-events', 'none')
-                .text(short);
-        }
+        // Rotated inline label — every event gets one, key events get bigger/brighter
+        const short = ev.label
+            .replace('WCS hits record ', '')
+            .replace('All-time high ', '')
+            .replace('WTI goes negative: ', '')
+            .replace('Russia invades ', '')
+            .replace('OPEC refuses to cut', 'OPEC: no cut')
+            .replace('Financial crisis crash', 'GFC crash')
+            .replace('Hurricane ', '')
+            .slice(0, 22);   // hard cap so nothing overflows
+
+        marker.append('text')
+            .attr('y', yTop + 3)
+            .attr('dy', '-6')
+            .attr('text-anchor', 'start')
+            .attr('transform', `rotate(-40, 0, ${yTop + 3})`)
+            .attr('fill', isLabeled ? '#8b949e' : '#484f58')
+            .attr('font-size', isLabeled ? '9.5px' : '8.5px')
+            .attr('pointer-events', 'none')
+            .text(short);
     }
 }
 

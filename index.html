@@ -24,16 +24,38 @@
 </header>
 
 <!-- ══════════════════════════════════════════════════════════════════════
-     SECTION 1 — Benchmarks (existing viz)
+     SECTION 1 — Benchmarks
 ═══════════════════════════════════════════════════════════════════════ -->
 <section id="section-benchmarks" data-section="benchmarks">
 
     <div class="section-narrative">
         <div class="narrative">
-            <h2>The benchmarks</h2>
+            <h2>The Benchmarks</h2>
             <p>WTI, Brent, WCS and Urals are the four reference prices that set the value of nearly
-                all crude oil traded globally — yet they diverge dramatically during crises.
+                all crude oil traded globally, yet they diverge dramatically during crises.
                 Use the story chapters below to explore each era, or brush the timeline to zoom in.</p>
+
+            <button class="learn-more-btn" onclick="toggleLearnMore(this)">Learn more ▾</button>
+
+            <div class="learn-more-content">
+                <div class="benchmark-entry">
+                    <h4>WTI — West Texas Intermediate</h4>
+                    <p>The US benchmark, priced at Cushing, Oklahoma, a landlocked pipeline hub in the middle of the country. Light and sweet (low sulfur), easy to refine into gasoline. When Americans hear "the oil price" on the news, they're usually hearing WTI.</p>
+                </div>
+                <div class="benchmark-entry">
+                    <h4>Brent</h4>
+                    <p>The global benchmark, originally from the North Sea between the UK and Norway. About 70% of the world's oil is priced relative to Brent, not WTI. The WTI–Brent spread is closely watched, when US shale boomed after 2010, WTI traded at a significant discount to Brent because too much oil was stuck inland with nowhere to go.</p>
+                </div>
+                <div class="benchmark-entry">
+                    <h4>WCS — Western Canadian Select</h4>
+                    <p>The Canadian heavy oil benchmark, blended from Alberta oil sands bitumen. Heavy, sour (high sulfur), expensive to refine, and landlocked with limited pipeline access to tidewater. It almost always trades at a discount to WTI, but that discount explodes during pipeline crises. In late 2018, WCS fell below $15/bbl while WTI sat at $70 (a $55 spread) because Alberta's pipelines were completely full.</p>
+                </div>
+                <div class="benchmark-entry">
+                    <h4>Urals</h4>
+                    <p>Russia's export blend, shipped from Baltic and Black Sea ports. It tracked Brent closely for decades at a modest discount. Then February 2022 changed everything, after the invasion of Ukraine and Western sanctions, Urals crashed to a $30+ discount as European buyers refused it and Russia redirected supply to India and China at fire-sale prices. Post-2022 the data grows murky as Russia stopped publishing transparent pricing.</p>
+                </div>
+                <p class="benchmark-footer">The story across all four: they price the same underlying commodity, yet geography, quality, and geopolitics can make them diverge by $50 or more at the exact same moment.</p>
+            </div>
         </div>
     </div>
 
@@ -79,12 +101,15 @@
         <div class="narrative">
             <h2>Same barrel, different price at the pump</h2>
             <p>While benchmarks set the global price of crude, what consumers pay at the pump varies
-                wildly by country — shaped by taxes, subsidies, refining capacity, and government policy.
+                wildly by country, shaped by taxes, subsidies, refining capacity, and government policy.
                 Drag the year slider to see how pump prices (ex-tax) evolved across six major economies.</p>
         </div>
     </div>
 
-    <svg id="map-chart"></svg>
+    <div id="map-wrap">
+        <svg id="map-chart"></svg>
+        <div id="map-slider-wrap"></div>
+    </div>
 
 </section>
 
@@ -97,7 +122,7 @@
         <div class="narrative">
             <h2>Volatility clusters in crisis years</h2>
             <p>Monthly returns reveal that oil prices are calm for years, then violently disruptive.
-                2008, 2014–16, and 2020 stand out as exceptional. Each cell is one month — hover for the
+                2008, 2014–16, and 2020 stand out as exceptional. Each cell is one month, hover for the
                 exact return. Switch series to compare how different benchmarks weathered each storm.</p>
         </div>
     </div>
@@ -123,7 +148,7 @@
             <h2>How much of a WTI crash reaches your tank?</h2>
             <p>The scatter plots WTI futures price against retail pump prices across six countries.
                 Use the <strong>lag slider</strong> to explore how many months it takes for a crude price
-                move to pass through to consumers — the relationship tightens around 1–2 months for most
+                move to pass through to consumers, the relationship tightens around 1–2 months for most
                 countries, but the slope differs dramatically.</p>
         </div>
     </div>
@@ -144,7 +169,7 @@
         <div class="narrative">
             <h2>The race: who leads the decade?</h2>
             <p>Watch benchmark prices race through 25 years of monthly data. Notice how WCS (Canadian
-                heavy) consistently lags behind — and how Urals briefly surged post-Ukraine before
+                heavy) consistently lags behind, and how Urals briefly surged post-Ukraine before
                 sanctions drove it into opacity. Hit Play and watch the $147 spike and COVID crash unfold
                 in real time.</p>
         </div>
@@ -175,6 +200,14 @@
     OPEC · Investing.com (Urals) · IEA / GlobalPetrolPrices · FRED (CPI) &nbsp;|&nbsp;
     Visualization: D3.js v7
 </footer>
+
+<script>
+    function toggleLearnMore(btn) {
+        const content = btn.nextElementSibling;
+        const open = content.classList.toggle('open');
+        btn.textContent = open ? 'Learn less ▴' : 'Learn more ▾';
+    }
+</script>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7/dist/d3.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js"></script>

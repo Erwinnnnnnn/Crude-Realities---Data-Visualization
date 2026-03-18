@@ -65,7 +65,7 @@ export const SERIES = [
 export const visible = new Set(SERIES.filter(s => s.defaultOn).map(s => s.key));
 
 // ── Margin/size constants (shared by all chart modules) ───────────────────────
-export const MARGIN = { top: 18, right: 24, bottom: 22, left: 52 };
+export const MARGIN = { top: 100, right: 32, bottom: 22, left: 52 };
 
 // ── Price mode: 'nominal' | 'real' ───────────────────────────────────────────
 export let priceMode = 'nominal';

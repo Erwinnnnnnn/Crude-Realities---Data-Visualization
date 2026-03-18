@@ -1,7 +1,7 @@
 // spread.js — WTI−WCS spread area chart (linked x-axis + shared hover)
 import { MARGIN, brushExtent, setHoverDate } from './main.js';
 
-const SPREAD_H = 110;
+const SPREAD_H = 330;
 let svg, spreadG, xScale, yScale, width;
 let _data = null;
 

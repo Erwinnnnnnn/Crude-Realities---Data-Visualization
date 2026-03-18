@@ -16,13 +16,17 @@ export function initRace(data) {
     initiated = true;
 
     const container = document.getElementById('race-container');
-    const W = container.clientWidth || 700;
-    const H = 320;
-    const MARGIN = { top: 10, right: 100, bottom: 30, left: 140 };
+    const W = Math.max(300, (container.parentElement?.clientWidth || container.clientWidth || 700) - 48);
+    const H = 340;  // extra 20px headroom for date label
+    const MARGIN = { top: 44, right: 90, bottom: 30, left: 140 };  // top increased
     const iW = W - MARGIN.left - MARGIN.right;
     const iH = H - MARGIN.top - MARGIN.bottom;
 
-    const svg = d3.select('#race-chart').attr('width', W).attr('height', H);
+    const svg = d3.select('#race-chart')
+        .attr('width', W).attr('height', H)
+        .attr('viewBox', `0 0 ${W} ${H}`)
+        .attr('preserveAspectRatio', 'xMidYMid meet')
+        .style('max-width', '100%');
     const g = svg.append('g').attr('transform', `translate(${MARGIN.left},${MARGIN.top})`);
 
     // Filter data to rows where at least one series has a value
@@ -50,12 +54,12 @@ export function initRace(data) {
 
     // Date label
     const dateLabel = svg.append('text')
-        .attr('x', W - MARGIN.right + 10)
-        .attr('y', MARGIN.top + 30)
+        .attr('x', MARGIN.left + iW)
+        .attr('y', 28)
         .attr('fill', '#f0b429')
-        .attr('font-size', '22px')
+        .attr('font-size', '20px')
         .attr('font-weight', '700')
-        .attr('text-anchor', 'start');
+        .attr('text-anchor', 'end');
 
     // ── Draw a frame ─────────────────────────────────────────────────────────
     function drawFrame(idx, animate) {
