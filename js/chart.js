@@ -97,9 +97,15 @@ export function initChart(data, events) {
     svg = d3.select(svgEl);
     chartG = svg.append('g').attr('transform', `translate(${MARGIN.left},${MARGIN.top})`);
 
-    // Clip rect extended upward (y:-60) so rotated annotation labels aren't cut off
+    // Clip rect: extend 120px upward for rotated annotation labels,
+    // and the same 120px downward so lines near the x-axis aren't cut off.
+    const clipPad = 120;
     svg.append('defs').append('clipPath').attr('id', 'main-clip')
-        .append('rect').attr('width', width).attr('height', height + 64).attr('y', -120);
+        .append('rect')
+        .attr('x', 0)
+        .attr('y', -clipPad)
+        .attr('width', width)
+        .attr('height', height + clipPad * 2);
 
     xScale = d3.scaleTime().domain(d3.extent(data, d => d.month)).range([0, width]);
     yScale = d3.scaleLinear().range([height, 0]);
@@ -263,7 +269,7 @@ export function updateChart(data, events) {
             .replace('OPEC refuses to cut', 'OPEC: no cut')
             .replace('Financial crisis crash', 'GFC crash')
             .replace('Hurricane ', '')
-            .slice(0, 22);   // hard cap so nothing overflows
+            .slice(0, 22);
 
         marker.append('text')
             .attr('y', yTop + 3)
