@@ -98,8 +98,11 @@ export function initMap(data) {
         });
 
     // ── Radius scale ──────────────────────────────────────────────────────────
-    // pump prices are in ¢/litre (values ~30–130); scale accordingly
-    const rScale = d3.scaleSqrt().domain([0, 130]).range([6, 36]);
+    // Domain spans realistic pump price range (~40–180 ¢/L).
+    // Let's set the normal range from 50-120, other stuff should show more variability
+    // To get 5× area difference: area ∝ r², so r_max = r_min × √5 ≈ 2.236
+    // Using r_min=8, r_max=18 gives area ratio of (50/5)² ≈ 5.06×
+    const rScale = d3.scaleSqrt().domain([50, 120]).range([5, 50]);
 
     // ── Helpers ───────────────────────────────────────────────────────────────
     let _firstDotDraw = true;
